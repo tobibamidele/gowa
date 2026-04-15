@@ -8,6 +8,7 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	"net/textproto"
 	"net/url"
 	"strconv"
 	"strings"
@@ -281,6 +282,11 @@ func (g *graphAPI) uploadMedia(phoneID string, fileData []byte, mimeType, filena
 			if err := mw.WriteField("type", mimeType); err != nil {
 				return err
 			}
+
+			h := make(textproto.MIMEHeader)
+			h.Set("Content-Disposition", fmt.Sprintf(`form-data; name="file"; filename="%s"`, filename))
+			h.Set("Content-Type", mimeType)
+
 			part, err := mw.CreateFormFile("file", filename)
 			if err != nil {
 				return err
