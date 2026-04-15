@@ -289,7 +289,7 @@ func (g *graphAPI) uploadMedia(phoneID string, fileData []byte, mimeType, filena
 					strings.NewReplacer(`"`, `\"`).Replace(filename)))
 			h.Set("Content-Type", mimeType)
 
-			part, err := mw.CreateFormFile("file", filename)
+			part, err := mw.CreatePart(h)
 			if err != nil {
 				return err
 			}
