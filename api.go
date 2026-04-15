@@ -284,7 +284,9 @@ func (g *graphAPI) uploadMedia(phoneID string, fileData []byte, mimeType, filena
 			}
 
 			h := make(textproto.MIMEHeader)
-			h.Set("Content-Disposition", fmt.Sprintf(`form-data; name="file"; filename="%s"`, filename))
+			h.Set("Content-Disposition",
+				fmt.Sprintf(`form-data; name="file"; filename="%s"`,
+					strings.NewReplacer(`"`, `\"`).Replace(filename)))
 			h.Set("Content-Type", mimeType)
 
 			part, err := mw.CreateFormFile("file", filename)
